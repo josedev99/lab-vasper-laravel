@@ -13,7 +13,7 @@ class ExamenesSeeder extends Seeder
      */
     public function run(): void
     {
-        $empresaId = 22; // Puedes obtenerlo de .env o definir un valor predeterminado
+        $empresaId = 44; // Puedes obtenerlo de .env o definir un valor predeterminado
 
         $datos = DB::select("SELECT e.nombre as examen,e.descripcion,e.name_tabla,e.usuario_id, c.nombre as categoria FROM `examenes` as e inner join categoria_examens as c on e.categoria_id=c.id where e.empresa_id=12;");//default empresa_id
 
