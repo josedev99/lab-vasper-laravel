@@ -156,7 +156,7 @@
             @endfor
             
        {!! $recomendacion !!}
-       {!! "<b>Espirometria:</b>No fumar dos horas antes de la prueba. Indicarle al medico si tiene gripe.<br> <b>Audiometría.</b>" !!}
+       {{-- {!! "<b>Espirometria:</b>No fumar dos horas antes de la prueba. Indicarle al medico si tiene gripe.<br> <b>Audiometría.</b>" !!} --}}
   
           </td>
         </tr>
