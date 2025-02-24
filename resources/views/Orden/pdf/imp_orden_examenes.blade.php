@@ -136,7 +136,7 @@
                 Se recomienda que sea la primer orina del dia.
                 Inicie la miccion en el baño y a mitad del chorro coloque en frasco, tapar inmediatamente. No colocar plastico, papel u otro material entre la boca del frasco y la tapadera.<br><br>";
               @endphp
-              @if (in_array($data_orden['examenes'][$i]["categoria"],["HECES",'EGH']))
+              @if (in_array($data_orden['examenes'][$i]["categoria"],['COPROLOGIA']))
                 @php
                   $recomendacion = $recomendacion . $heces;
                 @endphp
@@ -144,7 +144,7 @@
                 @php
                   $recomendacion = $recomendacion . $baciloscopia;
                 @endphp
-              @elseif (in_array($data_orden['examenes'][$i]["categoria"],["EGO",'ORINA']))
+              @elseif (in_array($data_orden['examenes'][$i]["categoria"],["EGO",'UROLOGIA']))
                 @php
                   $recomendacion = $recomendacion . $orina;
                 @endphp
