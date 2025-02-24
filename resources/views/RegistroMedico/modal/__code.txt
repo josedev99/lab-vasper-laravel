@@ -1,0 +1,176 @@
+{{-- <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="card p-1 m-0" style="border: 1px solid #8a9097">
+                    <div class="card-header p-1 bg-dark">
+                        <h4 class="text-center text-white mb-0" style="font-size: 14px">SIGNOS</h4>
+                    </div>
+                    <div class="card-header p-1">
+                        <div class="content-input">
+                            <input name="signo_emp" id="signo_emp" type="text"
+                                class="custom-input material input-icon" 
+                                placeholder=" " placeholder=" " style="text-transform: uppercase">
+                            <span class="icon-float-input" id="btnAddSignos"><i class="bi bi-plus-lg"></i></span>
+                            <label class="input-label" for="signo_emp">Signos</label>
+                        </div>
+                    </div>
+                    <div class="card-body p-1">
+                        <table width="100%" data-order='[[ 0, "desc" ]]'
+                            class="table-hover table-striped">
+                            <thead style="color:#020202;min-height:10px;border-radius: 2px;background: #cde4f5">
+                                <tr
+                                    style="min-height:10px;border-radius: 3px;font-style: normal;font-size: 12px">
+                                    <th style="text-align:center;width: 10%;border: 1px solid #dadce0">#</th>
+                                    <th style="text-align:center;width: 80%;border: 1px solid #dadce0">SIGNOS</th>
+                                    <th style="text-align:center;width: 10%;border: 1px solid #dadce0">ACCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody style="font-size: 12px;text-align:center" id="rows_preview_signos">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="card p-1 m-0" style="border: 1px solid #8a9097">
+                    <div class="card-header p-1 bg-dark">
+                        <h4 class="text-center text-white mb-0" style="font-size: 14px">SINTOMAS</h4>
+                    </div>
+                    <div class="card-header p-1">
+                        <div class="content-input">
+                            <input name="sintoma" id="sintoma" type="text"
+                                class="custom-input material input-icon" 
+                                placeholder=" " placeholder=" " style="text-transform: uppercase">
+                            <span class="icon-float-input" id="btnAddSintoma"><i class="bi bi-plus-lg"></i></span>
+                            <label class="input-label" for="consulta">Sintomas</label>
+                        </div>
+                    </div>
+                    <div class="card-body p-1">
+                        <table width="100%" data-order='[[ 0, "desc" ]]'
+                            class="table-hover table-striped">
+                            <thead style="color:#020202;min-height:10px;border-radius: 2px; background: #cde4f5">
+                                <tr
+                                    style="min-height:10px;border-radius: 3px;font-style: normal;font-size: 12px">
+                                    <th style="text-align:center;width: 10%;border: 1px solid #dadce0">#</th>
+                                    <th style="text-align:center;width: 80%;border: 1px solid #dadce0">SINTOMAS</th>
+                                    <th style="text-align:center;width: 10%;border: 1px solid #dadce0">ACCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody style="font-size: 12px;text-align:center" id="rows_preview_sintomas">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+
+{{-- <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="card p-1 m-0">
+                    <div class="card-header p-1">
+                        <h4 class="text-center text-dark mb-0" style="font-size: 14px">TRATAMIENTOS</h4>
+                    </div>
+                    <div class="card-header p-1">
+                        <div class="content-input">
+                            <input name="tratamiento_consulta" id="tratamiento_consulta" type="text"
+                                class="custom-input material input-icon" 
+                                placeholder=" " placeholder=" " style="text-transform: uppercase">
+                            <span class="icon-float-input" id="btnAddTratamiento"><i class="bi bi-plus-lg"></i></span>
+                            <label class="input-label" for="tratamiento_consulta">Tratamientos</label>
+                        </div>
+                    </div>
+                    <div class="card-body p-1">
+                        <table width="100%" data-order='[[ 0, "desc" ]]'
+                            class="table-hover table-striped">
+                            <thead style="color:#020202;min-height:10px;border-radius: 2px;background: #cde4f5">
+                                <tr
+                                    style="min-height:10px;border-radius: 3px;font-style: normal;font-size: 12px">
+                                    <th style="text-align:center;width: 10%;border: 1px solid #dadce0">#</th>
+                                    <th style="text-align:center;width: 80%;border: 1px solid #dadce0">TRATAMIENTOS</th>
+                                    <th style="text-align:center;width: 10%;border: 1px solid #dadce0">ACCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody style="font-size: 12px;text-align:center" id="rows_preview_tratamientos">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="card p-1 m-0">
+                    <div class="card-header p-1">
+                        <h4 class="text-center text-dark mb-0" style="font-size: 14px">GENERAR RECETA</h4>
+                    </div>
+                    <div class="card-body p-1">
+                        <table width="100%" data-order='[[ 0, "desc" ]]'
+                            class="table-hover table-striped">
+                            <thead style="color:#020202;min-height:10px;border-radius: 2px;background: #cde4f5">
+                                <tr
+                                    style="min-height:10px;border-radius: 3px;font-style: normal;font-size: 12px">
+                                    <th style="text-align:center;width: 10%;border: 1px solid #dadce0">#</th>
+                                    <th style="text-align:center;width: 20%;border: 1px solid #dadce0">TRATAMIENTOS</th>
+                                    <th style="text-align:center;width: 60%;border: 1px solid #dadce0">RECETAS</th>
+                                    <th style="text-align:center;width: 10%;border: 1px solid #dadce0">ACCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody style="font-size: 12px;text-align:center" id="rows_preview_recetas">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+
+
+
+/* foreach($data_form['data_signos'] as $item){
+        Signo::create([
+            'nombre' => trim($item->signo),
+            'empleado_id' => $empleado_id,
+            'consulta_id' => $save_consulta->id,
+            'empresa_id' => $empresa_id
+        ]);
+    } */
+
+    /* foreach($data_form['data_sintomas'] as $item){
+        Sintoma::create([
+            'sintoma' => trim($item->sintoma),
+            'empleado_id' => $empleado_id,
+            'consulta_id' => $save_consulta->id,
+            'empresa_id' => $empresa_id,
+            'sucursal_id' => $sucursal_id,
+            'usuario_id' => $usuario_id
+        ]);
+    } */
+    //save tratamientos
+    /* foreach($data_form['data_tratamientos'] as $item){
+        Tratamiento::create([
+            'nombre' => $item->tratamiento,
+            'empleado_id' => $empleado_id,
+            'consulta_id' => $save_consulta->id,
+            'empresa_id' => $empresa_id
+        ]);
+    } */
+    //save receta
+    /* foreach($data_form['data_recetas'] as $item){
+        //filtrar tratamientos seleccionados
+        $tratamiento = Tratamiento::where('nombre',$item->tratamiento)->where('consulta_id',$save_consulta->id)->where('empresa_id',$empresa_id)->first();
+        if($tratamiento){
+            Receta::create([
+                'total_dispensar' => $item->total_dispensar,
+                'dosis' => $item->dosis,
+                'tratamiento_id' => $tratamiento->id,
+
+                'empleado_id' => $empleado_id,
+                'consulta_id' => $save_consulta->id,
+                'empresa_id' => $empresa_id
+            ]);
+        }
+    } */
