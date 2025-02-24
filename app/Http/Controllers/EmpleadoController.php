@@ -59,13 +59,8 @@ class EmpleadoController extends Controller
 
             $labelBtnStatusEmp = ($row->estado == '1') ? 'Deshabilitar colaborador' : 'Habilitar colaborador';
             //MODULE EXAMEN
-            $btns = '';
-            if(Auth::check() && in_array('CREAR ORDEN DE EXAMEN', Session::get('userPermissions', []))){
-                $btns = '<button data-empleado_id="'. Lucipher::Cipher($row->id) .'" data-empresa_id="'. Lucipher::Cipher($row->empresa_id) .'" data-nombre="'. Lucipher::Descipher($row->nombre) .'" data-empresa="'. $row->empresa .'" data-sucursal="'. $row->sucursal .'" title="Registrar boleta de exámenes" class="btn btn-outline-info btn-sm" onclick="newOrdenExamenes(this)" style="border:none;font-size:18px"><i class="bi bi-file-earmark-plus"></i></button>';
-            }else{
-                $btns = '<button data-empleado_id="'. Lucipher::Cipher($row->id) .'" data-nombre="'. Lucipher::Descipher($row->nombre) .'" data-empresa="'. $row->empresa .'" data-sucursal="'. $row->sucursal .'" title="Registrar examenes preingreso" class="btn btn-outline-info btn-sm" onclick="addPreingresoExamen(this)" style="border:none;font-size:18px"><i class="bi bi-file-earmark-plus"></i></button>
-                <button data-empleado_id="'. Lucipher::Cipher($row->id) .'" data-nombre="'. Lucipher::Descipher($row->nombre) .'" data-empresa="'. $row->empresa .'" data-sucursal="'. $row->sucursal .'" title="Registrar pos-incapacidad" class="btn btn-outline-success btn-sm" onclick="ingPosIncapacidad(this)" style="border:none;font-size:18px"><i class="bi bi-box2-heart-fill"></i></button>';
-            }
+            $btns = '<button data-empleado_id="'. Lucipher::Cipher($row->id) .'" data-empresa_id="'. Lucipher::Cipher($row->empresa_id) .'" data-nombre="'. Lucipher::Descipher($row->nombre) .'" data-empresa="'. $row->empresa .'" data-sucursal="'. $row->sucursal .'" title="Registrar boleta de exámenes" class="btn btn-outline-info btn-sm" onclick="newOrdenExamenes(this)" style="border:none;font-size:18px"><i class="bi bi-file-earmark-plus"></i></button>';
+
             $sub_array[] = $contador;
             $sub_array[] = $row->codigo_empleado;
             $sub_array[] = ucwords(strtolower(Lucipher::Descipher($row->nombre)));
