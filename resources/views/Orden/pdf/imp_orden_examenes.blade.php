@@ -76,7 +76,7 @@
             <tr>
               <td colspan="20" class="info_empleado" style="20%;padding: 0px 10px 0px 0px"><strong>CÓDIGO:</strong> <br> {{ $data_orden['codigo_empleado'] }}</td>
               <td colspan="30" class="info_empleado" style="30%;border-left: 1px solid #000;padding: 0px 10px 0px 0px"><strong>NOMBRE:</strong> <br> {{ $data_orden['colaborador'] }}</td>
-              <td colspan="20" class="info_empleado" style="20%;border-left: 1px solid #000;padding: 0px 10px 0px 0px"><strong>DEPARTAMENTO:</strong> <br> {{ $data_orden['area_depto'] }}</td>
+              <td colspan="20" class="info_empleado" style="20%;border-left: 1px solid #000;padding: 0px 10px 0px 0px"><strong>DEPARTAMENTO:</strong> <br> - {{-- {{ $data_orden['area_depto'] }} --}}</td>
               <td colspan="30" class="info_empleado" style="30%;border-left: 1px solid #000;padding: 0px"><strong>EMPRESA:</strong> <br> {{ strtoupper($data_orden['empresa']) }}</p></td>
               </tr>
           </table>
