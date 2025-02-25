@@ -118,23 +118,21 @@
   
             @for($i=0; $i < count($data_orden['examenes']); $i++)
               @php
-                 $heces = "<strong>Heces</strong>: En el recipiente color verde  boca ancha colocar una pequeña cantidad de muestra.
-                Con ayuda de una espatula tomar la muestra y colocar en frasco, esta muestra no tiene que tener contacto ni con el inodoro y con la orina para evitar el deterioro de parasitos.<br>
+                 $heces = "<strong>Heces: </strong>En el recipiente color verde de boca ancha, colocar una pequeña cantidad de muestra.
+                  Con ayuda de una espátula, tomar la muestra y colocarla en el frasco. Esta muestra no debe tener contacto ni con el inodoro ni con la orina para evitar el deterioro de parásitos.<br>
                 ";
                 $baciloscopia ="<strong> Baciloscopia (muestra de esputo o flema): </strong>
                 En el recipiente transparente boca ancha tome una muestra de esputo, inspirando fuertemente y expulsando con un esfuerzo dentro de tos dentro del recipiente. 
                 La muestra debe ser tomada en ayunas y sin cepillarse los dientes.<br><br>
                 ";
   
-                $exo ="<strong>Exudado faringeo</strong>
-                Se le tomara una muestra de la garganta llamada cepillado de garganta.
+                $exo ="<strong>Exudado faringeo: </strong>Se le tomara una muestra de la garganta llamada cepillado de garganta.
                 No se deben usar enjuagues bucales antisepticos antes del examen.
                 Se realiza en ayunas y sin haberse cepillado los dientes.<br><br>";
   
-                $orina ="<strong>Orina</strong> 
-                Lavar el area genital con jabon y abundante agua. Secar minuciosamente.
-                Se recomienda que sea la primer orina del dia.
-                Inicie la miccion en el baño y a mitad del chorro coloque en frasco, tapar inmediatamente. No colocar plastico, papel u otro material entre la boca del frasco y la tapadera.<br><br>";
+                $orina ="<strong>Orina: </strong>Lavar el área genital con jabón y abundante agua. Secar minuciosamente.
+                Se recomienda que sea la primera orina del día.
+                Inicie la micción en el baño y, a mitad del chorro, coloque el frasco. Tapar inmediatamente. No colocar plástico, papel u otro material entre la boca del frasco y la tapadera.<br><br>";
               @endphp
               @if (in_array($data_orden['examenes'][$i]["categoria"],['COPROLOGIA']))
                 @php
