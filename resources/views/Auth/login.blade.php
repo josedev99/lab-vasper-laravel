@@ -87,7 +87,7 @@
                         <div class="col-lg-4 col-md-6 col-xl-4 custom-width">
                             <div class="card mb-3">
                                 <div class="card-body">
-                                    <div class="d-flex justify-content-center py-1">
+                                    <div class="d-flex justify-content-center py-1" style="height: 100px;">
                                         <img src="assets/img/vasperoficial.jpg" class="img-responsive log" width="180" height="70">
                                     </div><!-- End Logo -->
                                     @if (session('error'))
