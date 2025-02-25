@@ -73,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             axios.post(route('cliente.save.orden'), formData)
             .then((response) => {
-                console.log(response);
                 if (response.data.status === "success") {
                     let cliente = formData.get('nombre_empleado');
                     Swal.fire({

@@ -101,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 btnProcesarEmp.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> procesando...`;
                 axios.post(route('app.empleados.save'), formData)
                 .then((response) => {
-                    console.log(response);
                     form_data_emp.reset();
                     sessionStorage.removeItem('empleado_id');//destroy empleado_id
 
@@ -194,7 +193,6 @@ function getSucursales(empresa_id, done = null){
                 done();
             }
         }
-        console.log(result);
     }).catch((err) => {
         console.log(err);
     });
@@ -351,7 +349,6 @@ function editEmpleado(element) {
         }
     }).then((response) => {
         let data = response.data;
-        console.log(data);
         document.querySelector('input[name="codigo_empleado"]').value = data.codigo_empleado;
         document.querySelector('input[name="nombre_empleado"]').value = data.nombre;
         document.querySelector('input[name="telefono"]').value = data.telefono;

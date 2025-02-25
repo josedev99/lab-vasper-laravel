@@ -53,7 +53,6 @@ function getJornadasByEmpresa(done = null){
 
     axios.post(route('empresa.jornadas'),{empresa_id: empresa_id, fechas: rango_fechas, filtrar_fecha: true})
     .then((result) => {
-        console.log(result);
         let data = result.data;
         let jornada_orden = $("#jornada_lab")[0].selectize;
         jornada_orden.clear();
