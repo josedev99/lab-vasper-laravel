@@ -173,15 +173,10 @@ class EmpresaController extends Controller
      */
     public function EmpresasAll()
     {
-        $categoria = Auth::user()->categoria;
-        $id_empresa = Auth::user()->empresa_id;
         $userPermissions = Session::get('userPermissions', []); // Obtén los permisos desde la sesión
 
-        if ($categoria == 3) {
-            $usuarios = Empresa::All();
-        } else {
-            $usuarios = DB::select("SELECT * FROM `empresas` WHERE id = ?", [$id_empresa]);
-        } 
+        $usuarios = Empresa::All();
+        
         $data = array();
         foreach ($usuarios as $user) {
             $sub_array = array();
