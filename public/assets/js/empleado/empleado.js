@@ -164,9 +164,6 @@ function getDeptosEmpresa(empresa_id, done = null){
                 text: depto.area
             });
         });
-        if (data.length === 1) {
-            depto_emp.setValue(data[0].id);
-        }
         if(done && typeof done === "function"){
             done();
         }
