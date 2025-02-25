@@ -349,16 +349,21 @@ function editEmpleado(element) {
         }
     }).then((response) => {
         let data = response.data;
+        console.log(data);
         document.querySelector('input[name="codigo_empleado"]').value = data.codigo_empleado;
         document.querySelector('input[name="nombre_empleado"]').value = data.nombre;
         document.querySelector('input[name="telefono"]').value = data.telefono;
         document.querySelector('select[name="genero_emp"]').value = data.genero;
         document.querySelector('input[name="fecha_nac_emp"]').value = data.fecha_nacimiento;
-
-        getDeptosEmpresa(data.empresa_id, ()=> {
+        //datos empresa
+        $("#empresa_emp").selectize()[0].selectize.setValue(data.empresa_id);
+        getSucursales(data.empresa_id, ()=>{
+            $("#sucursal_emp").selectize()[0].selectize.setValue(data.sucursal_id);
+        })
+        getDeptosEmpresa(data.empresa_id, ()=>{
             $("#depto_emp").selectize()[0].selectize.setValue(data.area_depto_id);
             let select_cargos = $("#cargo_emp").selectize()[0].selectize;
-            if (data.cargo_id !== null) {
+            if (data.cargo_id !== '') {
                 getCargosArea(data.area_depto_id, data.empresa_id, () => {
                     select_cargos.setValue(data.cargo_id);
                 })
@@ -367,11 +372,6 @@ function editEmpleado(element) {
             }
         });
 
-        //datos empresa
-        $("#empresa_emp").selectize()[0].selectize.setValue(data.empresa_id);
-        getSucursales(data.empresa_id, ()=>{
-            $("#sucursal_emp").selectize()[0].selectize.setValue(data.sucursal_id);
-        })
         //textContente btn save
         document.querySelector('.btn-save-emp').innerHTML = `<i class="bi bi-floppy"></i> Actualizar`;
         $("#modal_new_empleado").modal('show');
