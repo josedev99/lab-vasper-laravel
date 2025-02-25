@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Ingresar resultados - Clinica empresarial')
+@section('title', 'INGRESO RESULTADOS - VASPER')
 
 @section('section-title')
     <nav>
@@ -122,6 +122,7 @@
     <script src="{{ versioned_asset('assets/js/resultados/orden_lab.js') }}"></script>
     <script src="{{ versioned_asset('assets/js/categoria_examen/examenes.js') }}"></script>
     <script>
+        $("#empresas_select").selectize();
         $("#jornada_lab").selectize();
     </script>
 @endpush

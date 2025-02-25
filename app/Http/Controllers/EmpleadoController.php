@@ -25,19 +25,10 @@ class EmpleadoController extends Controller
 {
     public function index(){
         $empresa_id = Auth::user()->empresa_id;
-
-        $deptos = DB::select("SELECT a.id as area_id,depto.departamento,a.nombre as area FROM `area_emps` as a INNER JOIN area_departamento_emps as depto on a.id_depto=depto.id and a.id_empresa=depto.empresa_id where a.id_empresa = ?",[$empresa_id]);
-        $areas_depto = [];
-        foreach($deptos as $item){
-            $array = [];
-            $array['id'] = $item->area_id;
-            $array['area'] = Lucipher::Descipher($item->departamento) ."/".$item->area;
-            $areas_depto[] = $array;
-        }
         $cat_examenes = CategoriaExamen::where('empresa_id',$empresa_id)->get();
         $empresas = Empresa::orderBy('id','desc')->select('id','nombre')->get();
         $laboratorios = Laboratorio::where('empresa_id',$empresa_id)->get();
-        return  view('Empleado.index',compact('areas_depto','cat_examenes','laboratorios','empresas'));
+        return  view('Empleado.index',compact('cat_examenes','laboratorios','empresas'));
     }
 
     public function listar_empleados(){
@@ -55,11 +46,6 @@ class EmpleadoController extends Controller
             }else{
                 $genero = $row->genero;
             }
-            $iconInhabilitar = ($row->estado == '1') ? '<i class="bi bi-person-slash text-danger"></i>' : '<i class="bi bi-person-check text-success"></i>';
-
-            $labelBtnStatusEmp = ($row->estado == '1') ? 'Deshabilitar colaborador' : 'Habilitar colaborador';
-            //MODULE EXAMEN
-            $btns = '<button data-empleado_id="'. Lucipher::Cipher($row->id) .'" data-empresa_id="'. Lucipher::Cipher($row->empresa_id) .'" data-nombre="'. Lucipher::Descipher($row->nombre) .'" data-empresa="'. $row->empresa .'" data-sucursal="'. $row->sucursal .'" title="Registrar boleta de exámenes" class="btn btn-outline-info btn-sm" onclick="newOrdenExamenes(this)" style="border:none;font-size:18px"><i class="bi bi-file-earmark-plus"></i></button>';
 
             $sub_array[] = $contador;
             $sub_array[] = $row->codigo_empleado;
@@ -69,7 +55,8 @@ class EmpleadoController extends Controller
             $sub_array[] = $genero;
             $sub_array[] = ucwords(strtolower($row->area));
             $sub_array[] = ucwords(strtolower($row->empresa));
-            $sub_array[] = $btns . '<button data-ref="'. Lucipher::Cipher($row->id) .'" title="Actualizar información del empleado" class="btn btn-outline-info btn-sm" onclick="editEmpleado(this)" style="border:none;font-size:18px"><i class="bi bi-person-gear"></i></button>
+            $sub_array[] = '<button data-empleado_id="'. Lucipher::Cipher($row->id) .'" data-empresa_id="'. Lucipher::Cipher($row->empresa_id) .'" data-nombre="'. Lucipher::Descipher($row->nombre) .'" data-empresa="'. $row->empresa .'" data-sucursal="'. $row->sucursal .'" title="Registrar boleta de exámenes" class="btn btn-outline-info btn-sm" onclick="newOrdenExamenes(this)" style="border:none;font-size:18px"><i class="bi bi-file-earmark-plus"></i></button>
+            <button data-ref="'. Lucipher::Cipher($row->id) .'" title="Actualizar información del empleado" class="btn btn-outline-info btn-sm" onclick="editEmpleado(this)" style="border:none;font-size:18px"><i class="bi bi-person-gear"></i></button>
             <button data-ref="'. Lucipher::Cipher($row->id) .'" title="Eliminar empleado" class="btn btn-outline-danger btn-sm btn-destroy" onclick="destroyEmp(this)" style="border:none;font-size:18px"><i class="bi bi-person-fill-x"></i></button>
             ';
 
@@ -98,7 +85,6 @@ class EmpleadoController extends Controller
         $validateData = request()->validate([
             'codigo_empleado' => 'required|string|min:1|max:25',
             'nombre_empleado' => 'required|string|min:4|max:200',
-            'telefono' => 'required|string|min:1|max:15',
             'genero_emp' => 'required|string|min:1|max:4',
             'fecha_nac_emp' => 'required|string|min:8|max:15',
             'depto_emp' => 'required|string|min:1|max:150',
@@ -109,6 +95,7 @@ class EmpleadoController extends Controller
         try{
             $empresa_id = request()->input('empresa_emp');
             $sucursal_id = request()->input('sucursal_emp');
+            $telefono = (request()->input('telefono') != '') ? request()->input('telefono') : '0000-0000';
             //validar si es ediccion o nuevo registro
             $codigo_empleado = strtoupper(trim($validateData['codigo_empleado']));
             $data = [
@@ -116,7 +103,7 @@ class EmpleadoController extends Controller
                 'tipo' => 'Empresarial',
                 'nombre' => Lucipher::Cipher(trim(strtoupper($validateData['nombre_empleado']))),
                 'genero' => $validateData['genero_emp'],
-                'telefono' => $validateData['telefono'],
+                'telefono' => $telefono,
                 'codigo_empleado' => $codigo_empleado,
                 'no_afiliacion' => '0',
                 'fecha_ingreso' => date('Y-m-d'),

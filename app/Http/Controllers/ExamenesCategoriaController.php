@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 class ExamenesCategoriaController extends Controller
 {
     public function get_examenes(){
-        $empresa_id = (Lucipher::Descipher(request()->get('empresa_id'))) ? Lucipher::Descipher(request()->get('empresa_id')) : Auth::user()->empresa_id; //si el decrypt falla, se obtiene el id de la empresa del usuario logueado
+        $empresa_id = Auth::user()->empresa_id;
         $examenes = DB::select('SELECT c.id as categoria_id,c.nombre as categoria,e.id as examen_id,e.nombre as examen FROM `categoria_examens` AS c inner join examenes as e on c.id=e.categoria_id and c.empresa_id=e.empresa_id where e.empresa_id = ?',[$empresa_id]);
         //new array
         $cat_examenes = [];

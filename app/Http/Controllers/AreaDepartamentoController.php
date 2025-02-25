@@ -266,7 +266,7 @@ class AreaDepartamentoController extends Controller
 
     public function getCargosArea()
     {
-        $empresa_id = Auth::user()->empresa_id;
+        $empresa_id = request()->input('empresa_id');
 
         $area_id = request()->input('area_id');
         $datos = CargoEmp::where('id_area', $area_id)->where('id_empresa', $empresa_id)->get();
@@ -309,8 +309,17 @@ class AreaDepartamentoController extends Controller
             return response()->json($departamentos);
         }
     }
-    //return response()->json($resultados);
-    //select e.nombre,c.nombre,ca.id_depto,ca.nombre,dp.departamento from det_depto_riesgos as d inner join examenes as e on e.id=d.examen_id inner join cargo_emps as c on c.id=d.cargo_id inner join area_emps as ca on c.id_area=ca.id inner join area_departamento_emps as dp on ca.id_depto=dp.id where departamento="b8EpD2O86jy7yVLj2hEjF9oDIft9hHEW+GbVHTjwPVw="
+    public function getDeptosByEmpresa(){
+        $empresa_id = request()->input('empresa_id');
 
-
+        $deptos = DB::select("SELECT a.id as area_id,depto.departamento,a.nombre as area FROM `area_emps` as a INNER JOIN area_departamento_emps as depto on a.id_depto=depto.id and a.id_empresa=depto.empresa_id where a.id_empresa = ?",[$empresa_id]);
+        $areas_depto = [];
+        foreach($deptos as $item){
+            $array = [];
+            $array['id'] = $item->area_id;
+            $array['area'] = Lucipher::Descipher($item->departamento) ."/".$item->area;
+            $areas_depto[] = $array;
+        }
+        return response()->json($areas_depto);
+    }
 }

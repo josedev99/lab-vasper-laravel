@@ -1,5 +1,6 @@
+var rangoFechas = '';
 document.addEventListener('DOMContentLoaded', () => {
-    flatpickr("#filtro_rango_fechas", {
+    rangoFechas = flatpickr("#filtro_rango_fechas", {
         mode: "range",
         locale: "es",
         /* maxDate: "today", */
@@ -7,14 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
         dateFormat: "d/m/Y",
         disableMobile: true
     });
-    //init datatable
-    //listar_orden_examenes();
-    //selectize de select de jornada_evaluacion
-    $("#empresas_select").selectize({
-        onChange: function(value){
-            getJornadasByEmpresa();
-            listar_orden_examenes();
-        }
+    dataFiltrarOrdenes(); //cargar los input de filtrado
+
+    let empresa_selectize = $("#empresas_select")[0].selectize;
+    empresa_selectize.on('change', function (value) {
+        sessionStorage.removeItem('dataFiltrarOrdenes');
+        getJornadasByEmpresa();
+        listar_orden_examenes();
     });
     document.getElementById('filtro_rango_fechas').addEventListener('change', (e) => {
         getJornadasByEmpresa();
@@ -40,6 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
 })
+
+function setRangoFechas(fechaRango) {
+    if (rangoFechas) {
+        rangoFechas.setDate(fechaRango.split(" a "), true); // true para disparar eventos
+    }
+}
 
 function getJornadasByEmpresa(done = null){
     let empresa_id = $("#empresas_select").selectize()[0].selectize.getValue();
@@ -70,6 +76,7 @@ function getJornadasByEmpresa(done = null){
 function listar_orden_examenes() {
     let empresa_id = $("#empresas_select").selectize()[0].selectize.getValue();
     let jornada_id = $("#jornada_lab").selectize()[0].selectize.getValue();
+    saveFormFiltroOrdenes(); //sirve para cargar los datos seleccionados en form de filtrado
     dataTable("dt_evaluacion_resultados", route('lab.orden.listar'), { empresa_id,jornada_id });
 }
 
@@ -130,4 +137,38 @@ function generar_orden_pdf(data){
     document.body.appendChild(form);
     form.submit();
     form.remove();
+}
+
+//cargar datos seleccionados
+function saveFormFiltroOrdenes(){
+    let selectize = $("#empresas_select")[0].selectize;
+    let empresa_text = selectize.options[selectize.getValue()]?.text || "";
+    let jornada_id = $("#jornada_lab").selectize()[0].selectize.getValue();
+    let rango_fechas = document.getElementById('filtro_rango_fechas').value;
+    if(empresa_text === ""){
+        return;
+    }
+    sessionStorage.setItem('dataFiltrarOrdenes', JSON.stringify({
+        empresa_text,
+        jornada_id,
+        rango_fechas
+    }));
+}
+function dataFiltrarOrdenes(){
+    let data = JSON.parse(sessionStorage.getItem('dataFiltrarOrdenes'));
+    if(data && data.empresa_text !== ""){
+        let selectize = $("#empresas_select").selectize()[0].selectize;
+        let option = Object.keys(selectize.options).find(key => selectize.options[key].text === data.empresa_text);
+        if (option) {
+            selectize.setValue(option);
+            setRangoFechas(data.rango_fechas);
+            document.getElementById('filtro_rango_fechas').dispatchEvent(new Event('change'));
+            if(data.rango_fechas !== ""){
+                getJornadasByEmpresa(selectize.getValue(), ()=> {
+                    $("#jornada_lab").selectize()[0].selectize.setValue(data.jornada_id);
+                });
+            }
+        }
+        listar_orden_examenes(); //carga el datatable
+    }
 }

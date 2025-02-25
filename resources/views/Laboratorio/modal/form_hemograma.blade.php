@@ -10,7 +10,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header py-1 px-2 text-light" style="background: #034f84">
-                <h1 class="modal-title fs-7">INGRESAR RESULTADO DE: HEMOGRAMA</h1>
+                <h1 class="modal-title fs-7">INGRESAR RESULTADO DE: HEMOGRAMA COMPLETO</h1>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>

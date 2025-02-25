@@ -123,9 +123,9 @@ class LaboratorioResultadoController extends Controller
         $empresa_id = $colaborador['empresa_id'];
 
         if($cat_id != null || $cat_id != ''){
-            $data = DB::select("SELECT dj.estado FROM `det_jornadas` as dj inner join examenes as e on dj.examen_id=e.id and dj.empresa_id=e.empresa_id where e.categoria_id = ? and dj.jornada_id = ? and dj.empleado_id = ? and dj.empresa_id = ? GROUP BY dj.estado;",[$cat_id, $jornada_id,$empleado_id,$empresa_id]);
+            $data = DB::select("SELECT dj.estado FROM `det_jornadas` as dj inner join examenes as e on dj.examen_id=e.id where e.categoria_id = ? and dj.jornada_id = ? and dj.empleado_id = ? and dj.empresa_id = ? GROUP BY dj.estado;",[$cat_id, $jornada_id,$empleado_id,$empresa_id]);
         }else{
-            $data = DB::select("SELECT dj.estado FROM `det_jornadas` as dj inner join examenes as e on dj.examen_id=e.id and dj.empresa_id=e.empresa_id where dj.jornada_id = ? and dj.empleado_id = ? and dj.empresa_id = ? GROUP by dj.estado;",[$jornada_id,$empleado_id,$empresa_id]);
+            $data = DB::select("SELECT dj.estado FROM `det_jornadas` as dj inner join examenes as e on dj.examen_id=e.id where dj.jornada_id = ? and dj.empleado_id = ? and dj.empresa_id = ? GROUP by dj.estado;",[$jornada_id,$empleado_id,$empresa_id]);
         }
 
         //validaciones
@@ -143,7 +143,7 @@ class LaboratorioResultadoController extends Controller
         $colaborador = Empleado::where('id',$empleado_id)->select('id','empresa_id')->first();
         $empresa_id = $colaborador['empresa_id'];
 
-        $datos = DB::select("SELECT e.id as empleado_id,dj.jornada_id,j.fecha_jornada, e.codigo_empleado,e.nombre,e.telefono,a.nombre as area,dj.estado,s.nombre as sucursal,dj.cat_examen,dj.evaluacion,c.nombre as categoria,c.id as categoria_id FROM `det_jornadas` as dj inner join jornadas as j on dj.jornada_id=j.id and dj.empresa_id=j.empresa_id INNER JOIN empleados as e on dj.empleado_id=e.id and dj.empresa_id=e.empresa_id INNER JOIN area_emps as a on e.area_depto_id=a.id INNER JOIN sucursals as s on e.sucursal_id=s.id and e.empresa_id=s.empresa_id INNER JOIN examenes as ex on dj.examen_id=ex.id and dj.empresa_id=ex.empresa_id inner join categoria_examens as c on ex.categoria_id=c.id and ex.empresa_id=c.empresa_id where dj.jornada_id = ? and dj.empleado_id = ? and dj.empresa_id = ? and dj.cat_examen='laboratorio clinico' GROUP by c.nombre UNION SELECT e.id as empleado_id,dj.jornada_id,j.fecha_jornada,e.codigo_empleado,e.nombre,e.telefono,a.nombre as area,dj.estado,s.nombre as sucursal,dj.cat_examen,dj.evaluacion, pr.nombre as categoria, pr.id as categoria_id FROM `det_jornadas` as dj inner join jornadas as j on dj.jornada_id=j.id and dj.empresa_id=j.empresa_id INNER JOIN empleados as e on dj.empleado_id=e.id and dj.empresa_id=e.empresa_id INNER JOIN area_emps as a on e.area_depto_id=a.id INNER JOIN sucursals as s on e.sucursal_id=s.id and e.empresa_id=s.empresa_id INNER JOIN pruebas_especiales as pr on dj.examen_id=pr.id and dj.empresa_id=pr.id_empresa where dj.jornada_id = ? and dj.empleado_id = ? and dj.empresa_id = ? and dj.cat_examen in ('especialidades','complementarios');",[$jornada_id,$empleado_id,$empresa_id,$jornada_id,$empleado_id,$empresa_id]);
+        $datos = DB::select("SELECT e.id as empleado_id,dj.jornada_id,j.fecha_jornada, e.codigo_empleado,e.nombre,e.telefono,a.nombre as area,dj.estado,s.nombre as sucursal,dj.cat_examen,dj.evaluacion,c.nombre as categoria,c.id as categoria_id FROM `det_jornadas` as dj inner join jornadas as j on dj.jornada_id=j.id and dj.empresa_id=j.empresa_id INNER JOIN empleados as e on dj.empleado_id=e.id and dj.empresa_id=e.empresa_id INNER JOIN area_emps as a on e.area_depto_id=a.id INNER JOIN sucursals as s on e.sucursal_id=s.id and e.empresa_id=s.empresa_id INNER JOIN examenes as ex on dj.examen_id=ex.id inner join categoria_examens as c on ex.categoria_id=c.id where dj.jornada_id = ? and dj.empleado_id = ? and dj.empresa_id = ? and dj.cat_examen='laboratorio clinico' GROUP by c.nombre UNION SELECT e.id as empleado_id,dj.jornada_id,j.fecha_jornada,e.codigo_empleado,e.nombre,e.telefono,a.nombre as area,dj.estado,s.nombre as sucursal,dj.cat_examen,dj.evaluacion, pr.nombre as categoria, pr.id as categoria_id FROM `det_jornadas` as dj inner join jornadas as j on dj.jornada_id=j.id and dj.empresa_id=j.empresa_id INNER JOIN empleados as e on dj.empleado_id=e.id and dj.empresa_id=e.empresa_id INNER JOIN area_emps as a on e.area_depto_id=a.id INNER JOIN sucursals as s on e.sucursal_id=s.id and e.empresa_id=s.empresa_id INNER JOIN pruebas_especiales as pr on dj.examen_id=pr.id where dj.jornada_id = ? and dj.empleado_id = ? and dj.empresa_id = ? and dj.cat_examen in ('especialidades','complementarios');",[$jornada_id,$empleado_id,$empresa_id,$jornada_id,$empleado_id,$empresa_id]);
         
         $data = [];
         $contador = 1;
@@ -758,7 +758,7 @@ class LaboratorioResultadoController extends Controller
 
         if($cat_examen == "laboratorio clinico"){
             if($categoria === "QUIMICA"){
-                $examenes = DB::select("SELECT e.id,e.nombre as examen,c.nombre as categoria,dj.cat_examen,dj.jornada_id,dj.empleado_id,COALESCE(drq.resultado,'') as resultado,COALESCE(drq.estado,'') as estado FROM `det_jornadas` as dj inner join examenes as e on dj.cat_examen='laboratorio clinico' and dj.examen_id=e.id and dj.empresa_id=e.empresa_id inner join categoria_examens as c on e.categoria_id=c.id LEFT JOIN det_resultado_quimicas as drq on drq.examen_id=e.id and dj.jornada_id=drq.jornada_id and dj.empleado_id=drq.empleado_id where c.id = ? and dj.jornada_id = ? and dj.empleado_id = ?", [$categoria_id,$jornada_id,$empleado_id]);
+                $examenes = DB::select("SELECT e.id,e.nombre as examen,c.nombre as categoria,dj.cat_examen,dj.jornada_id,dj.empleado_id,COALESCE(drq.resultado,'') as resultado,COALESCE(drq.estado,'') as estado FROM `det_jornadas` as dj inner join examenes as e on dj.cat_examen='laboratorio clinico' and dj.examen_id=e.id inner join categoria_examens as c on e.categoria_id=c.id LEFT JOIN det_resultado_quimicas as drq on drq.examen_id=e.id and dj.jornada_id=drq.jornada_id and dj.empleado_id=drq.empleado_id where c.id = ? and dj.jornada_id = ? and dj.empleado_id = ?", [$categoria_id,$jornada_id,$empleado_id]);
                 $observaciones = ResultadoQuimica::where('jornada_id',$jornada_id)->where('empleado_id',$empleado_id)->where('empresa_id',$empresa_id)->select('observaciones')->first();
                 if($observaciones){
                     $observaciones = $observaciones['observaciones'];
@@ -771,7 +771,7 @@ class LaboratorioResultadoController extends Controller
                 ]);
 
             }else{
-                $data = DB::select("SELECT e.id,e.nombre as examen,c.nombre as categoria,dj.cat_examen,dj.jornada_id,dj.empleado_id FROM `det_jornadas` as dj inner join examenes as e on dj.cat_examen='laboratorio clinico' and dj.examen_id=e.id and dj.empresa_id=e.empresa_id inner join categoria_examens as c on e.categoria_id=c.id where c.id = ? and dj.jornada_id = ? and dj.empleado_id = ?",[$categoria_id,$jornada_id,$empleado_id]);
+                $data = DB::select("SELECT e.id,e.nombre as examen,c.nombre as categoria,dj.cat_examen,dj.jornada_id,dj.empleado_id FROM `det_jornadas` as dj inner join examenes as e on dj.cat_examen='laboratorio clinico' and dj.examen_id=e.id inner join categoria_examens as c on e.categoria_id=c.id where c.id = ? and dj.jornada_id = ? and dj.empleado_id = ?",[$categoria_id,$jornada_id,$empleado_id]);
                 $examenes = [];
                 foreach($data as $item){
                     $array = [

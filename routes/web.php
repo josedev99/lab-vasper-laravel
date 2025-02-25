@@ -207,6 +207,8 @@ Route::prefix('area-departamento')->middleware('auth')->group(function(){
     Route::post('/remove-departamento',[AreaDepartamentoController::class,'removeDepartamento'])->name('area.depto.remove');
     //obtener los cargos por id area
     Route::post('/cargo-area',[AreaDepartamentoController::class,'getCargosArea'])->name('area.cargos.obtener');
+    //Obtener departamentos por empresa
+    Route::post('obtener-departamentos-empresa',[AreaDepartamentoController::class,'getDeptosByEmpresa'])->name('empresa.deptos.obtener');
 });
 
 //ROUTAS PARA RESULTADOS DE EXAMEN

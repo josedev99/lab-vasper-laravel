@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let empresa_emp = $("#empresa_emp").selectize()[0].selectize;
     empresa_emp.on('change',function(value){
         getSucursales(value);
+        //get departamentos
+        getDeptosEmpresa(value);
     })
     try {
         //form data empleado
@@ -59,11 +61,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     input.classList.remove('border-valid');
                 }
                 //validacion para departamento campo con selectize
-                let depto_emp = document.getElementById('depto_emp');
-                if (depto_emp.value === "") {
+                let depto_area = formData.get('depto_emp');
+                if (depto_area === "") {
                     Toast.fire({
                         icon: "warning",
                         title: `El campo área/departamento es requerido.`
+                    });
+                    return;
+                }
+                let cargo_emp = formData.get('cargo_emp');
+                if (cargo_emp === "") {
+                    Toast.fire({
+                        icon: "warning",
+                        title: `El cargo del colaborador es requerido.`
                     });
                     return;
                 }
@@ -124,65 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
         }
-        //button edicion
-        let table = new DataTable('#dt_listado_empleados');
-        table.on('draw.dt', attachEventsDetEmp);
-        //Save departamento empleado
-        let form_data_detop_area = document.getElementById('form_data_detop_area');
-        if (form_data_detop_area) {
-            form_data_detop_area.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                let formData = new FormData(form_data_detop_area);
-
-                for (let [key, value] of formData.entries()) {
-                    let labelTextContent = document.querySelector('label[for="' + key + '"]').textContent;
-                    if (!value.trim()) {
-                        Toast.fire({
-                            icon: "warning",
-                            title: `El campo ${labelTextContent} es requerido.`
-                        });
-                        return;
-                    }
-                }
-
-                let response = await axios.post(route('app.empleados.depto.save'), formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                });
-                if (response.data.status === "success") {
-                    Toast.fire({
-                        icon: "success",
-                        title: response.data.message
-                    });
-                    let objeOptionSelect = {
-                        value: response.data.results.id,
-                        text: response.data.results.departamento
-                    }
-                    /*===== Codigo para agregar departamento desde la modal main ======*/
-                    let departamento = $("#depto_emp").selectize()[0].selectize;
-                    departamento.addOption(objeOptionSelect);
-                    departamento.addItem(response.data.results.id);
-                    /*===== Codigo para agregar departamento desde la modal de consulta ======*/
-                    let depto_area_select = $("#area_departamento_emp").selectize()[0].selectize;
-                    depto_area_select.addOption(objeOptionSelect);
-                    depto_area_select.addItem(response.data.results.id);
-
-                    $("#modal_new_departamento").modal('hide');
-                    form_data_detop_area.reset();
-                } else if (response.data.status === "warning") {
-                    Toast.fire({
-                        icon: "warning",
-                        title: response.data.message
-                    });
-                } else {
-                    Toast.fire({
-                        icon: "error",
-                        title: response.data.message
-                    });
-                }
-            })
-        }
     } catch (err) {
         if (err.status === 500) {
             Swal.fire({
@@ -199,6 +150,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 })
+
+function getDeptosEmpresa(empresa_id, done = null){
+    axios.post(route('empresa.deptos.obtener'),{empresa_id})
+    .then((result) => {
+        let data = result.data;
+        let depto_emp = $("#depto_emp").selectize()[0].selectize;
+        depto_emp.clear();
+        depto_emp.clearOptions();
+        data.forEach((depto) => {
+            depto_emp.addOption({
+                value: depto.id,
+                text: depto.area
+            });
+        });
+        if (data.length === 1) {
+            depto_emp.setValue(data[0].id);
+        }
+        if(done && typeof done === "function"){
+            done();
+        }
+    }).catch((err) => {
+        console.log(err);
+    });
+}
 
 function getSucursales(empresa_id, done = null){
     axios.post(route('empresa.sucursales.obtener'),{empresa_id})
@@ -274,7 +249,7 @@ function newOrdenExamenes(event){
     let list_items_examenes = document.getElementById('list-items-examenes');
     list_items_examenes.innerHTML = `<p class="m-0 p-0 text-danger">Categoria no seleccionada.</p>`;
     getJornadasByEmpresa(empresa_id);
-    axios.post(route('examen.getExamenes'),{empresa_id})
+    axios.post(route('examen.getExamenes'))
     .then((response) => {
         if(response.status === 200){
             array_data_examenes = response.data;
@@ -285,34 +260,6 @@ function newOrdenExamenes(event){
     }).catch((err) => {
         console.log(err);
     });
-}
-
-function attachEventsDetEmp() {
-    let btnOrdenExamen = document.querySelectorAll('.btn-o-examen');
-    //button para modal de nuevo orden de perfil
-    let btnOrdenPerfil = document.querySelectorAll('.btn-o-perfil');
-    //new btn para abril modal de examenes preingreso
-    if (btnOrdenExamen && btnOrdenPerfil) {
-        //Agregar nueva orden de perfil
-        btnOrdenPerfil.forEach((btn) => {
-            btn.addEventListener('click', async (e) => {
-                e.stopPropagation();
-                //save session id empleado
-                let empleado_ref = btn.dataset.emp_ref;
-                sessionStorage.setItem('emp_id', empleado_ref);
-
-                let empleado = btn.dataset.nombre;
-                let empresa = btn.dataset.empresa;
-                let sucursal = btn.dataset.sucursal;
-                //set html element
-                document.getElementById('colaborador_html').innerHTML = `<i class="bi bi-person-circle"></i> <strong>EMPLEADO: </strong>${empleado}`;
-                document.getElementById('empresa_html').innerHTML = `<i class="bi bi-building-fill"></i> <strong>EMPRESA: </strong>${empresa}`;
-                document.getElementById('sucursal_html').innerHTML = `<i class="bi bi-house-check"></i> <strong>SUCURSAL: </strong>${sucursal}`;
-                listar_perfiles_orden();//se declara en perfil_examen.js
-                $("#modal_nueva_orden_perfil").modal('show');
-            })
-        })
-    }
 }
 
 //function para inhabilitar empleado
@@ -365,17 +312,18 @@ document.addEventListener('DOMContentLoaded', () => {
     let $select = $('#depto_emp').selectize();
 
     $select[0].selectize.on('change', function (value) {
-        getCargosArea(value);
+        let empresa_id = $("#empresa_emp").selectize()[0].selectize.getValue();
+        getCargosArea(value,empresa_id);
     });
 })
 
-function getCargosArea(area_id, callback = null) {
-    axios.post(route('area.cargos.obtener'), { area_id })
+function getCargosArea(area_id, empresa_id, callback = null) {
+    axios.post(route('area.cargos.obtener'), { area_id, empresa_id })
         .then((result) => {
+            let select_cargos = $("#cargo_emp").selectize()[0].selectize;
+            select_cargos.clear();
+            select_cargos.clearOptions();
             if (result.data.length) {
-                let select_cargos = $("#cargo_emp").selectize()[0].selectize;
-                select_cargos.clear();
-                select_cargos.clearOptions();
                 let data = result.data;
                 data.forEach((item) => {
                     select_cargos.addOption({
@@ -383,6 +331,9 @@ function getCargosArea(area_id, callback = null) {
                         text: item.nombre
                     })
                 })
+                if(result.data.length === 1){
+                    select_cargos.setValue(data[0].id);
+                }
                 if (callback && typeof callback === "function") {
                     callback();
                 }
@@ -403,21 +354,25 @@ function editEmpleado(element) {
         }
     }).then((response) => {
         let data = response.data;
+        console.log(data);
         document.querySelector('input[name="codigo_empleado"]').value = data.codigo_empleado;
         document.querySelector('input[name="nombre_empleado"]').value = data.nombre;
         document.querySelector('input[name="telefono"]').value = data.telefono;
         document.querySelector('select[name="genero_emp"]').value = data.genero;
         document.querySelector('input[name="fecha_nac_emp"]').value = data.fecha_nacimiento;
 
-        $("#depto_emp").selectize()[0].selectize.setValue(data.area_depto_id);
-        let select_cargos = $("#cargo_emp").selectize()[0].selectize;
-        if (data.cargo_id !== null) {
-            getCargosArea(data.area_depto_id, () => {
-                select_cargos.setValue(data.cargo_id);
-            })
-        } else {
-            select_cargos.clear();
-        }
+        getDeptosEmpresa(data.empresa_id, ()=> {
+            $("#depto_emp").selectize()[0].selectize.setValue(data.area_depto_id);
+            let select_cargos = $("#cargo_emp").selectize()[0].selectize;
+            if (data.cargo_id !== null) {
+                getCargosArea(data.area_depto_id, data.empresa_id, () => {
+                    select_cargos.setValue(data.cargo_id);
+                })
+            } else {
+                select_cargos.clear();
+            }
+        });
+
         //datos empresa
         $("#empresa_emp").selectize()[0].selectize.setValue(data.empresa_id);
         getSucursales(data.empresa_id, ()=>{

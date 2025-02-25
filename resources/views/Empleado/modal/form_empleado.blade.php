@@ -86,9 +86,9 @@
                                 <div class="col-sm-12 col-md-4 col-lg-2 mb-2">
                                     <div class="content-input mb-2">
                                         <input name="telefono" type="text"
-                                            class="custom-input material validInputEmpleado" value="" placeholder=" "
+                                            class="custom-input material" value="" placeholder=" "
                                             placeholder=" ">
-                                        <label class="input-label" for="telefono">Teléfono</label>
+                                        <label class="input-label" for="telefono">Teléfono (opcional)</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-8 col-lg-4 mb-2">
@@ -97,9 +97,6 @@
                                         <select name="depto_emp" id="depto_emp" class="form-select border-radius" data-toggle="tooltip" data-placement="bottom"
                                             title="Seleccionar genero de empleado/a">
                                             <option value="">Selecccionar</option>
-                                            @foreach($areas_depto as $item)
-                                                <option value="{{ $item['id'] }}">{{ $item['area'] }}</option>
-                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
